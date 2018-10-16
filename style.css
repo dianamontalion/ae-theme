@@ -190,7 +190,7 @@ textarea:focus,
 
 a {
 	color: #673AB7;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a:hover,
