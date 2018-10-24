@@ -47,6 +47,8 @@
 	- Jetpack
 	- Simple Social Icons
 	- WP Instagram
+- Custom
+    - Author Box
 - Skip Links
 - Sticky Message
 - Before Header
@@ -189,7 +191,7 @@ textarea:focus,
 }
 
 a {
-	color: #673AB7;
+	color: #77579D;
 	text-decoration: none;
 }
 
@@ -236,6 +238,7 @@ i {
 
 blockquote {
 	margin: 40px;
+	color: #636363;
 }
 
 blockquote::before {
@@ -260,7 +263,7 @@ h4,
 h5,
 h6 {
 	font-family: 'Cormorant Garamond', serif;
-	font-weight: 700;
+	font-weight: 400;
 	line-height: 1.2;
 	margin: 0 0 10px;
 }
@@ -283,6 +286,7 @@ h3 {
 h4 {
 	font-size: 20px;
 	font-size: 2rem;
+	color: 
 }
 
 h5 {
@@ -743,21 +747,12 @@ th:first-child {
 	padding-bottom: 20px;
 }
 
-.author-box {
-	border-bottom: 1px solid #C2DFD8;
-	border-top: 1px solid #C2DFD8;
-	margin-bottom: 60px;
-	padding-bottom: 40px;
-	padding-top: 40px;
-}
-
 .breadcrumb {
 	font-size: 16px;
 	font-size: 1.6rem;
 }
 
-.archive-description p:last-child,
-.author-box p:last-child {
+.archive-description p:last-child {
 	margin-bottom: 0;
 }
 
@@ -820,8 +815,7 @@ th:first-child {
 	text-transform: uppercase;
 }
 
-.archive-description .entry-title,
-.author-box-title {
+.archive-description .entry-title {
 	font-size: 20px;
 	font-size: 2rem;
 }
@@ -830,7 +824,7 @@ th:first-child {
 	font-family: 'Cormorant Garamond', serif;
 	font-size: 42px;
 	font-size: 4.2rem;
-	font-weight: 400;
+	font-weight: 500;
 }
 
 .page .entry-title {
@@ -1113,6 +1107,37 @@ img.alignright,
 	width: 160px;
 }
 
+/* Custom
+---------------------------------------------------------------------------------------------------- */
+
+/* Author Boxes
+--------------------------------------------- */
+.author-box {
+	border-bottom: 1px solid #C2DFD8;
+	border-top: 1px solid #C2DFD8;
+	margin-bottom: 60px;
+	padding-bottom: 40px;
+	padding-top: 40px;
+}
+
+.author-box p {
+    font-size: 1em;
+    padding-bottom: 10px
+}
+
+.author-box-title {
+	/*font-size: 20px;*/
+	font-size: 2rem;
+	text-transform: uppercase;
+}
+
+.custom-author-box .widget-title {
+    font-weight: 500;
+}
+
+.custom-author-box .avatar {
+	margin-right: 24px;
+}
 
 /* Skip Links
 ---------------------------------------------------------------------------------------------------- */
@@ -1439,6 +1464,14 @@ img.alignright,
 
 .content .entry-header {
 	text-align: center;
+}
+
+.entry-content .intro-text {
+    color: #76997E;
+    border-bottom: 1px dotted #C2DFD8;
+    border-top: 1px dotted #C2DFD8;
+    padding: 10px 0;
+    margin-bottom: 20px;
 }
 
 p.entry-meta {

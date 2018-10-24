@@ -1,13 +1,13 @@
 <?php
 /**
- * Twenty Seven Pro.
+ * Architecting Enterprise Theme
  *
- * This file adds functions to the Twenty Seven Pro Theme.
+ * This file adds functions to the AE custom theme.
  *
- * @package Twenty Seven Pro
- * @author  Brian Gardner
+ * @package AE theme
+ * @author  Diana Montalion 
  * @license GPL-2.0+
- * @link    https://briangardner.com/
+ * based on Twenty Seven Pro theme
  */
 
 // Start the engine.
@@ -123,13 +123,6 @@ function twenty_seven_remove_genesis_metaboxes( $_genesis_theme_settings_pagehoo
 
 }
 
-// Modify size of Gravatar in author box.
-add_filter( 'genesis_author_box_gravatar_size', 'twenty_seven_author_box_gravatar' );
-function twenty_seven_author_box_gravatar( $size ) {
-
-	return 90;
-
-}
 
 // Modify size of Gravatar in entry comments.
 add_filter( 'genesis_comment_list_args', 'twenty_seven_comments_gravatar' );
@@ -190,3 +183,253 @@ genesis_register_sidebar( array(
 	'name'        => __( 'Before Footer', 'twenty-seven' ),
 	'description' => __( 'This is the before footer section.', 'twenty-seven' ),
 ) );
+
+// Customize category display to show an edition (category) and tags (topics)
+add_filter( 'genesis_post_meta', 'ae_entry_meta' );
+function ae_entry_meta( $post_meta ) {
+	
+	$post_meta = '[post_terms taxonomy="category" before="Edition: "]' . '[post_tags before="Topics: "]';	return $post_meta;
+}
+
+//* Change the footer credit text
+add_filter('genesis_footer_creds_text', 'ae_footer_creds_filter');
+function ae_footer_creds_filter( $creds ) {
+	$creds = '[footer_copyright] &middot; <a href="http://mentrixgroup.com">Mentrix, Inc.</a> &middot; Built on the <a href="http://www.studiopress.com/themes/genesis" title="Genesis Framework">Genesis Framework</a>';
+	return $creds;
+}
+
+//* Display author box on single posts
+//add_filter( 'get_the_author_genesis_author_box_single', '__return_true' );
+
+ 
+genesis_register_sidebar( array(
+	'id'          => 'ae-author',
+	'name'        => __( 'AE Author Bio', 'ae-theme' ),
+	'description' => __( 'This is the author bio box.', 'ae-theme' ),
+) );
+
+add_action('genesis_before_sidebar_widget_area', 'ae_display_author_bio', 1);
+
+function ae_display_author_bio() {
+    if (is_singular('post')) {
+      genesis_widget_area('ae-author', 
+        array(
+                'before' => '<span class="custom-author-box">',
+                'after' => '</span>')
+                ); 
+    }              
+}
+
+add_filter( 'widget_display_callback', 'ae_author_content', 10, 3 );
+function ae_author_content( $instance, $widget, $args ) {
+
+    if ($args['id'] == 'ae-author' && is_singular('post') ) {
+      //return $instance;
+    //} else { 
+      $instance['title'] = get_the_author_meta( 'display_name' );
+      $instance['content'] = get_ae_author_markup();
+    
+    }
+    
+    return $instance;
+}
+
+// Depends on Simple Social Share plugin 
+function get_ae_author_markup() {
+	
+	// Get data
+	if ( is_singular('post') ) {
+		$author_avatar 	= get_avatar( get_the_author_meta( 'ID' ), 70 );
+		$author_name 	= get_the_author_meta( 'display_name' );
+		$author_desc 	= get_the_author_meta( 'description' );
+		$email = get_the_author_meta( 'email' );
+		$facebook 	= get_the_author_meta( 'facebook' );
+		$googleplus 	= get_the_author_meta( 'googleplus' );
+		$twitter 	= get_the_author_meta( 'twitter' );
+		$website 	= get_the_author_meta( 'url' );
+		
+		// Output author image, name and bio
+		$markup =  $author_avatar;
+		$markup .= '<div class="custom-author-box"><p>' . $author_desc . '</p></div>';
+		  if ($website) { $markup .= '<p><a href="' . $website . '">Visit my website</a></p>'; }
+		
+		// Output social share links using simple social share icons IF plugin is active
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		
+		if ( is_plugin_active('simple-social-icons/simple-social-icons.php') 
+		     && ($twitter || $facebook || $googleplus || $email )) {
+
+			// Create the space for displaying icons
+			$open_markup = '<div class="author-social-links">
+			               <section id="simple-social-icons-2" class="simple-social-icons">
+			               <ul>';
+			$markup .= $open_markup;
+		
+		  // Display icons that include data
+		  if ( $facebook ) {
+		      $markup .=  '<li class="ssi-facebook">
+		               <a href="http://facebook.com/' . $facebook . ' " target="_blank">
+		               <svg role="img" class="social-facebook" aria-labelledby="social-facebook">
+		               <title id="social-facebook">Facebook</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-facebook">
+		               </use></svg></a></li>';
+		  }
+		  // Repurpose G+ to linkedin TODO recode this when adding new fields
+		  if ( $googleplus ) {
+			 $markup .= '<li class="ssi-linkedin">
+		               <a href="http://linkedin/' . $googleplus . ' " target="_blank">
+		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
+		               <title id="social-linkedin">Linkedin</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
+		               </use></svg></a></li>';
+		  }
+		  if ( $twitter ) {
+			 $markup .= '<li class="ssi-twitter">
+		               <a href="http://twitter.com/@' . $twitter . ' " target="_blank">
+		               <svg role="img" class="social-twitter" aria-labelledby="social-twitter">
+		               <title id="social-twitter">Twitter</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-twitter">
+		               </use></svg></a></li>';
+		  }
+          if ( $email ) {
+			  $markup .= '<li class="ssi-email">
+		               <a href="mailto:' . $email . ' " target="_blank">
+		               <svg role="img" class="social-email" aria-labelledby="social-email">
+		               <title id="social-email">Email</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-email">
+		               </use></svg></a></li>';
+		
+		  // Close up list
+          $markup .= '</ul></section></div>';
+		  }
+	  }
+    }
+   
+    return $markup;
+ }
+
+//* Allow the use of shortcodes in widget areas
+add_filter('widget_text', 'do_shortcode');
+
+// Add shortcode for title used in sticky region
+add_shortcode( 'post_title', function( $atts ) {
+    $atts = shortcode_atts( array(
+        'id' => get_the_ID(),
+    ), $atts, 'post_title' );
+    return get_the_title( absint( $atts['id'] ) );
+});
+
+
+//****************** PLAYGROUND **********************// 
+//****************************************************//
+
+
+//Add author shortcodes
+add_shortcode( 'author', 'author_bio_func' );
+
+//[author fields = name || description || website]
+function author_bio_func( $atts ) {
+
+	$val = $atts['field'];
+	
+    $vals = array(
+            //'name' => get_the_author_meta('first_name'),
+            'name' =>   get_the_author_meta( 'display_name' ),
+            'description' => get_the_author_meta('user_description'), // if empty, return pythonipsum
+            'website' => get_the_author_meta('user_url'), // if empty, return something
+            );
+            
+	return $vals[$val];
+	
+}
+
+
+//* Removes default Genesis Author Box, Adds a custom Author Box
+remove_action( 'genesis_after_entry', 'genesis_do_author_box_single', 8 );
+//add_action( 'genesis_after_entry', 'ae_author_box', 8 );
+
+// Depends on Simple Social Share plugin 
+function ae_author_box() {
+	
+	// Get data
+	if ( is_singular('post') ) {
+		$author_avatar 	= get_avatar( get_the_author_meta( 'ID' ), 70 );
+		$author_name 	= get_the_author_meta( 'display_name' );
+		$author_desc 	= get_the_author_meta( 'description' );
+		$email = get_the_author_meta( 'email' );
+		$facebook 	= get_the_author_meta( 'facebook' );
+		$googleplus 	= get_the_author_meta( 'googleplus' );
+		$twitter 	= get_the_author_meta( 'twitter' );
+		$website 	= get_the_author_meta( 'url' );
+		
+		// Output author image, name and bio
+		echo '<section class="author-box">';
+		echo $author_avatar;
+		echo '<h4 class="author-box-title">About ' . $author_name . '</h4>';
+		echo '<div class="author-box-content" itemprop="description"><p>' . $author_desc . '</p>';
+		  //TODO Breaks styling, fix
+		  //if ($website) { echo '<a href="' . $website . '>Visit my website</a>'; }
+		echo '</div>';
+		
+		// Output social share links using simple social share icons IF plugin is active
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		
+		if ( is_plugin_active('simple-social-icons/simple-social-icons.php') 
+		     && ($twitter || $facebook || $googleplus || $email )) {
+
+			// Create the space for displaying icons
+			$open_markup = '<div class="author-social-links">
+			               <section id="simple-social-icons-2" class="simple-social-icons">
+			               <ul>';
+			echo $open_markup;
+		
+		  //$plugin_url = plugin_dir_url('simple-social-icons') . '
+		  // Display icons that include data
+		  if ( $facebook ) {
+		      $markup = '<li class="ssi-facebook">
+		               <a href="http://facebook.com/' . $facebook . ' " target="_blank">
+		               <svg role="img" class="social-facebook" aria-labelledby="social-facebook">
+		               <title id="social-facebook">Facebook</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-facebook">
+		               </use></svg></a></li>';
+			 echo $markup;
+		  }
+		  // Repurpose G+ to linkedin TODO recode this when adding new fields
+		  if ( $googleplus ) {
+			 $markup = '<li class="ssi-linkedin">
+		               <a href="http://linkedin/' . $googleplus . ' " target="_blank">
+		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
+		               <title id="social-linkedin">Linkedin</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
+		               </use></svg></a></li>';
+			 echo $markup;
+		  }
+		  if ( $twitter ) {
+			 $markup = '<li class="ssi-twitter">
+		               <a href="http://twitter.com/@' . $twitter . ' " target="_blank">
+		               <svg role="img" class="social-twitter" aria-labelledby="social-twitter">
+		               <title id="social-twitter">Twitter</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-twitter">
+		               </use></svg></a></li>';
+			 echo $markup;
+		  }
+          if ( $email ) {
+			  $markup = '<li class="ssi-email">
+		               <a href="mailto:' . $email . ' " target="_blank">
+		               <svg role="img" class="social-email" aria-labelledby="social-email">
+		               <title id="social-email">Email</title>
+		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-email">
+		               </use></svg></a></li>';
+			  echo $markup;
+		
+		  // Close up list
+          echo '</ul></section></div>';
+		  }
+		  echo '<a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-hashtags="ae" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>';
+		  echo '<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
+<script type="IN/Share"></script>';
+      echo '</div>';
+      echo '</section>';
+	  }
+    }
+ }
