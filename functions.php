@@ -191,15 +191,12 @@ function ae_entry_meta( $post_meta ) {
 	$post_meta = '[post_terms taxonomy="category" before="Edition: "]' . '[post_tags before="Topics: "]';	return $post_meta;
 }
 
-//* Change the footer credit text
+// Change the footer credit text
 add_filter('genesis_footer_creds_text', 'ae_footer_creds_filter');
 function ae_footer_creds_filter( $creds ) {
 	$creds = '[footer_copyright] &middot; <a href="http://mentrixgroup.com">Mentrix, Inc.</a> &middot; Built on the <a href="http://www.studiopress.com/themes/genesis" title="Genesis Framework">Genesis Framework</a>';
 	return $creds;
 }
-
-//* Display author box on single posts
-//add_filter( 'get_the_author_genesis_author_box_single', '__return_true' );
 
  
 genesis_register_sidebar( array(
@@ -224,8 +221,7 @@ add_filter( 'widget_display_callback', 'ae_author_content', 10, 3 );
 function ae_author_content( $instance, $widget, $args ) {
 
     if ($args['id'] == 'ae-author' && is_singular('post') ) {
-      //return $instance;
-    //} else { 
+      
       $instance['title'] = get_the_author_meta( 'display_name' );
       $instance['content'] = get_ae_author_markup();
     
@@ -320,8 +316,8 @@ add_shortcode( 'post_title', function( $atts ) {
 });
 
 
-//****************** PLAYGROUND **********************// 
-//****************************************************//
+//****************** PLAYGROUND ***********************************************************// 
+//****************************************************************************************//
 
 
 //Add author shortcodes
@@ -333,7 +329,6 @@ function author_bio_func( $atts ) {
 	$val = $atts['field'];
 	
     $vals = array(
-            //'name' => get_the_author_meta('first_name'),
             'name' =>   get_the_author_meta( 'display_name' ),
             'description' => get_the_author_meta('user_description'), // if empty, return pythonipsum
             'website' => get_the_author_meta('user_url'), // if empty, return something
@@ -343,6 +338,8 @@ function author_bio_func( $atts ) {
 	
 }
 
+//* Display author box on single posts
+//add_filter( 'get_the_author_genesis_author_box_single', '__return_true' );
 
 //* Removes default Genesis Author Box, Adds a custom Author Box
 remove_action( 'genesis_after_entry', 'genesis_do_author_box_single', 8 );
