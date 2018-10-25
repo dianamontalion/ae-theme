@@ -977,6 +977,7 @@ img.alignright,
 	background: none;
 	margin-bottom: 15px;
 	padding: 0;
+	border-bottom: none;
 }
 
 .sidebar .featured-content .entry-title {
