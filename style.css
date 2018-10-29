@@ -831,7 +831,7 @@ th:first-child {
 	margin-bottom: 40px;
 }
 
-.entry-title a,
+.content .entry-title a,
 .sidebar .widget-title a {
 	color: #333;
 	text-decoration: none;
@@ -988,6 +988,10 @@ img.alignright,
 	font-weight: 700;
 	line-height: 1.25;
 	margin-top: 10px;
+}
+
+.widget .entry-header .entry-title a {
+    color: #77579D;
 }
 
 .sidebar .featured-content .entry-meta {
