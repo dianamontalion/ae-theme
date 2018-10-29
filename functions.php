@@ -315,6 +315,24 @@ add_shortcode( 'post_title', function( $atts ) {
     return get_the_title( absint( $atts['id'] ) );
 });
 
+add_filter('widget_tag_cloud_args', 'ae_tag_cloud_as_list', 10, 1);
+
+/**
+ * Output the tag_cloud widget as a list of same font size items
+ * @param    array $args    Display arguments.
+ * @return array Settings for the output.
+ */
+function ae_tag_cloud_as_list($args) {
+    
+    // Format $args => array( breaks widget output so, this.
+    $args['smallest'] = 1.4;
+    $args['largest'] = 1.4;
+    $args['unit'] = 'rem';
+    $args['format'] = 'list';
+                
+    return $args;
+}
+
 
 //****************** PLAYGROUND ***********************************************************// 
 //****************************************************************************************//
@@ -323,7 +341,7 @@ add_shortcode( 'post_title', function( $atts ) {
 //Add author shortcodes
 add_shortcode( 'author', 'author_bio_func' );
 
-//[author fields = name || description || website]
+//[author field = name || description || website]
 function author_bio_func( $atts ) {
 
 	$val = $atts['field'];
@@ -430,3 +448,7 @@ function ae_author_box() {
 	  }
     }
  }
+ 
+ 
+
+
