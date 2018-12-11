@@ -194,7 +194,7 @@ function ae_entry_meta( $post_meta ) {
 // Change the footer credit text
 add_filter('genesis_footer_creds_text', 'ae_footer_creds_filter');
 function ae_footer_creds_filter( $creds ) {
-	$creds = '[footer_copyright] &middot; <a href="http://mentrixgroup.com">Mentrix, Inc.</a> &middot; Built on the <a href="http://www.studiopress.com/themes/genesis" title="Genesis Framework">Genesis Framework</a>';
+	$creds = '[footer_copyright] &middot; <a href="http://mentrixgroup.com">Mentrix Group</a>';
 	return $creds;
 }
 
@@ -273,7 +273,7 @@ function get_ae_author_markup() {
 		  // Repurpose G+ to linkedin TODO recode this when adding new fields
 		  if ( $googleplus ) {
 			 $markup .= '<li class="ssi-linkedin">
-		               <a href="http://linkedin/' . $googleplus . ' " target="_blank">
+		               <a href="http://linkedin.com/' . $googleplus . ' " target="_blank">
 		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
 		               <title id="social-linkedin">Linkedin</title>
 		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
@@ -412,7 +412,7 @@ function ae_author_box() {
 		  // Repurpose G+ to linkedin TODO recode this when adding new fields
 		  if ( $googleplus ) {
 			 $markup = '<li class="ssi-linkedin">
-		               <a href="http://linkedin/' . $googleplus . ' " target="_blank">
+		               <a href="http://linkedin.com/' . $googleplus . ' " target="_blank">
 		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
 		               <title id="social-linkedin">Linkedin</title>
 		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
