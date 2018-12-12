@@ -273,7 +273,7 @@ function get_ae_author_markup() {
 		  // Repurpose G+ to linkedin TODO recode this when adding new fields
 		  if ( $googleplus ) {
 			 $markup .= '<li class="ssi-linkedin">
-		               <a href="http://linkedin.com/' . $googleplus . ' " target="_blank">
+		               <a href="http://linkedin.com/in/' . $googleplus . ' " target="_blank">
 		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
 		               <title id="social-linkedin">Linkedin</title>
 		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
@@ -412,7 +412,7 @@ function ae_author_box() {
 		  // Repurpose G+ to linkedin TODO recode this when adding new fields
 		  if ( $googleplus ) {
 			 $markup = '<li class="ssi-linkedin">
-		               <a href="http://linkedin.com/' . $googleplus . ' " target="_blank">
+		               <a href="http://linkedin.com/in/' . $googleplus . ' " target="_blank">
 		               <svg role="img" class="social-linkedin" aria-labelledby="social-linkedin">
 		               <title id="social-linkedin">Linkedin</title>
 		               <use xlink:href="' . plugin_dir_url('simple-social-icons') . 'simple-social-icons/symbol-defs.svg#social-linkedin">
